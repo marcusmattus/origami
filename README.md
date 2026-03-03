@@ -18,3 +18,10 @@ View your app in AI Studio: https://ai.studio/apps/drive/15o3GOUByM7e7C19axbmFpI
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Product capabilities
+
+- **Origami Copilot tutor**: AI-assisted tutorial generation is available in the Tutorials view.
+- **Origami tutorials dataset**: the Tutorials view includes a **Download Tutorials Dataset (.json)** action.
+- **Video uploads**: users can add images and videos when creating feed posts.
+- **Backend for web + Expo mobile**: Firebase Auth (including Google Sign-In), Firestore, and Storage are already wired and can be reused by an Expo app.

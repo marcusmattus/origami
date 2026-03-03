@@ -761,6 +761,27 @@ const TutorialsView: React.FC<{ user: User | null; onAuthRequest: () => void; }>
             return matchesDifficulty && matchesSearch && matchesCategory;
         });
     }, [tutorials, searchTerm, difficultyFilter, categoryFilter]);
+
+    const handleDownloadDataset = () => {
+        const payload = tutorials.map(({ id, title, difficulty, difficultyScore, category, steps, authorId }) => ({
+            id,
+            title,
+            difficulty,
+            difficultyScore,
+            category,
+            steps,
+            authorId,
+        }));
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'origami-tutorials-dataset.json';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
     
     const handleGenerateTutorial = async () => {
         if(!user) { onAuthRequest(); return; }
@@ -879,6 +900,13 @@ Provide the response as a JSON object that strictly follows this schema:
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
+                <div className="bg-card-bg rounded-xl shadow p-4 mb-6">
+                    <h3 className="text-lg font-bold text-text-main">Origami Copilot & Dataset</h3>
+                    <p className="text-sm text-text-secondary mt-1">Use AI Copilot to draft tutorials, export the tutorial dataset as JSON, and reuse the same Firebase backend and Google Sign-In flow for an Expo mobile app.</p>
+                    <button onClick={handleDownloadDataset} className="mt-3 bg-primary/10 hover:bg-primary/20 text-primary font-semibold py-2 px-3 rounded-lg transition-colors">
+                        Download Tutorials Dataset (.json)
+                    </button>
+                </div>
                 <div className="bg-card-bg rounded-xl shadow p-4 mb-6 flex flex-col sm:flex-row gap-4 flex-wrap">
                     <input 
                         type="text" 
