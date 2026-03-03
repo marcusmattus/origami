@@ -777,10 +777,15 @@ const TutorialsView: React.FC<{ user: User | null; onAuthRequest: () => void; }>
         const link = document.createElement('a');
         link.href = url;
         link.download = 'origami-tutorials-dataset.json';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        try {
+            document.body.appendChild(link);
+            link.click();
+        } finally {
+            if (link.parentNode) {
+                link.parentNode.removeChild(link);
+            }
+            URL.revokeObjectURL(url);
+        }
     };
     
     const handleGenerateTutorial = async () => {
