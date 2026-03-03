@@ -51,9 +51,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
-// Fix: The API key must be obtained exclusively from the environment variable.
-// The user's environment will handle the API_KEY for Gemini.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const geminiApiKey = process.env.API_KEY;
+const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
 
 
 // --- TYPE DEFINITIONS & CONSTANTS ---
@@ -769,6 +768,10 @@ const TutorialsView: React.FC<{ user: User | null; onAuthRequest: () => void; }>
             alert("Please enter what you want to make.");
             return;
         }
+        if (!ai) {
+            alert("AI tutorial generation is unavailable. Set GEMINI_API_KEY and reload.");
+            return;
+        }
         setIsGenerating(true);
         try {
             const prompt = `You are an expert origami instructor. Your knowledge is based on common origami models and techniques, like those on origami.guide.
@@ -1349,7 +1352,11 @@ export default function OrigamiHub() {
     
     const renderView = () => {
         if (loading) {
-            return <div className="text-center p-10">Loading...</div>;
+            return (
+                <div className="flex items-center justify-center p-10">
+                    <div className="bg-card-bg rounded-xl shadow-lg px-6 py-4 text-text-secondary font-medium">Loading OrigamiHub...</div>
+                </div>
+            );
         }
 
         if (profileUserId) {
