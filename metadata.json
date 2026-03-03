@@ -1,0 +1,5 @@
+{
+  "name": "Origami Hub",
+  "description": "A community platform for building and sharing origami art. Users can browse a feed of creations, follow tutorials, and manage their own origami project plans.",
+  "requestFramePermissions": []
+}
